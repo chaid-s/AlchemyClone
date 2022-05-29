@@ -13,7 +13,7 @@ const water = new Element({name:"water",position:{x:200, y:30}, type:"blue"});
 const fire = new Element({name:"fire",position:{x:200, y:30}, type:"red"});
 
 const earth = new Element({name:"earth",position:{x:200, y:30}, type:"brown"});
-
+//maybe try enqueue 
 liveElements.push(wind)
 liveElements.push(water)
 liveElements.push(earth)
