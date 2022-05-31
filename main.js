@@ -1,8 +1,6 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-
-
 const liveElements = [];
 
 
@@ -32,6 +30,23 @@ const animate = () =>{
 animate();
 
 let movingElement = false;
+
+
+const fuseElements = (elementName1, elementName2) =>{
+     /**
+      * Takes two element names. If there is an entry
+      * in fusionList with two matching parents 
+      * (the order of parents does not matter),
+      * return the array of children.
+      */
+     for(let i = 0; i<fusionList.length; i++){
+         let check = fusionList[i];
+         if(check.parents.includes(elementName1) 
+            && check.parents.includes(elementName2)){
+                return check.children;
+         }
+     }
+}
 
 
 //method to take click coords, and a square
