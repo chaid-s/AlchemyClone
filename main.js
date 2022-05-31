@@ -46,6 +46,8 @@ const fuseElements = (elementName1, elementName2) =>{
                 return check.children;
          }
      }
+
+     return [];
 }
 
 
