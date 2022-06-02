@@ -4,13 +4,13 @@ const ctx = canvas.getContext("2d");
 const liveElements = [];
 
 
-const wind = new Element({name:"wind",position:{x:100, y:100}, img:"green"});
+const wind = new Element({name:"wind",position:{x:200, y:100}, img:"green"});
 
-const water = new Element({name:"water",position:{x:200, y:30}, img:"blue"});
+const water = new Element({name:"water",position:{x:200, y:200}, img:"blue"});
 
-const fire = new Element({name:"fire",position:{x:200, y:30}, img:"red"});
+const fire = new Element({name:"fire",position:{x:200, y:300}, img:"red"});
 
-const earth = new Element({name:"earth",position:{x:200, y:30}, img:"brown"});
+const earth = new Element({name:"earth",position:{x:200, y:400}, img:"brown"});
 //maybe try enqueue 
 liveElements.push(wind)
 liveElements.push(water)
@@ -115,11 +115,23 @@ document.getElementById("gameCanvas").addEventListener("mousemove",(e)=>{
 })
 
 document.getElementById("gameCanvas").addEventListener("mouseup",(e)=>{
-    movingElement=false;
-
     //drop the element
     //then,,.,. run check if dropped element touched anything
-    //if so run fusions checks 
+    //if so run fusions checks
+    for(let i = 0; i<liveElements.length; i++){
+        if( movingElement.name != liveElements[i].name &&
+            movingElement.position.x+movingElement.width >=liveElements[i].position.x &&
+            movingElement.position.x <= liveElements[i].position.x + liveElements[i].width &&
+            movingElement.position.y + movingElement.height >=liveElements[i].position.y &&
+            movingElement.position.y <= liveElements[i].position.y + liveElements[i].height
+        ){
+            console.log(movingElement.name+" overlaps "+liveElements[i].name)
+            break;
+        }
+    }
+    movingElement=false;
+
+     
 
     //if two squares touch, console.log somethign
     //Sean - is to figure out if squares touch
