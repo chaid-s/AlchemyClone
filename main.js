@@ -138,11 +138,6 @@ document.getElementById("gameCanvas").addEventListener("mouseup",(e)=>{
         //console.log(movingElement.name + " Element Dropped")
         movingElement=false;
     }
-<<<<<<< HEAD
-    //console.log(movingElement.name + " Element Dropped")
-    movingElement=false;
-=======
     
->>>>>>> 58de56ffe54dadd944a531d2033b1bcadf857c53
 
 })
