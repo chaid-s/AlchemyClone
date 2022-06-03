@@ -129,7 +129,7 @@ document.getElementById("gameCanvas").addEventListener("mouseup",(e)=>{
             break;
         }
     }
-    console.log(movingElement.name + " Element Dropped")
+    //console.log(movingElement.name + " Element Dropped")
     movingElement=false;
 
     //if two squares touch, console.log somethign
