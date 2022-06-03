@@ -1,11 +1,12 @@
 class Element{
     //Look img is just a color rn but it will be a png eventually
-    constructor({name, position, img}){
+    constructor({name, position, img, id=0}){
         this.name = name
         this.height = 100;
         this.width = 100;
         this.position = position;
         this.img = img;
+        this.id = id;
     }
 
     draw(){

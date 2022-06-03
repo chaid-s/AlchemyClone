@@ -1,16 +1,16 @@
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-const liveElements = [];
+let liveElements = [];
 
 
-const wind = new Element({name:"wind",position:{x:200, y:100}, img:"green"});
+const wind = new Element({name:"wind",position:{x:200, y:100}, img:"green",id:1});
 
-const water = new Element({name:"water",position:{x:200, y:200}, img:"blue"});
+const water = new Element({name:"water",position:{x:200, y:200}, img:"blue",id:2});
 
-const fire = new Element({name:"fire",position:{x:200, y:300}, img:"red"});
+const fire = new Element({name:"fire",position:{x:200, y:300}, img:"red",id:3});
 
-const earth = new Element({name:"earth",position:{x:200, y:400}, img:"brown"});
+const earth = new Element({name:"earth",position:{x:200, y:400}, img:"brown",id:4});
 //maybe try enqueue 
 liveElements.push(wind)
 liveElements.push(water)
@@ -80,8 +80,13 @@ const isElementClicked=(click,element)=>{
    
     if(click.x >= element.position.x && click.x <= element.position.x + element.width 
         && click.y >= element.position.y && click.y <= element.position.y + element.height){
-            console.log("clicked:", element.name);
+            //console.log("clicked:", element.name);
             movingElement = element;
+            //remove element from liveElements then push it back in
+            
+            liveElements = liveElements.filter(el =>{return el.id!=movingElement.id})
+            liveElements.push(movingElement);
+            console.log(liveElements)
         }
         else{
             movingElement = false;   
@@ -95,7 +100,7 @@ document.getElementById("gameCanvas").addEventListener("mousedown",(e)=>{
     /**
      * Checks all elements to see if they are clicked.
      */
-    for(let i =0; i<liveElements.length; i++){
+    for(let i =liveElements.length-1; i>=0; i--){
         isElementClicked({x:e.offsetX, y:e.offsetY }, liveElements[i]);
         if(movingElement){
             break;
@@ -118,21 +123,26 @@ document.getElementById("gameCanvas").addEventListener("mouseup",(e)=>{
     //drop the element
     //then,,.,. run check if dropped element touched anything
     //if so run fusions checks
-    for(let i = 0; i<liveElements.length; i++){
-        if( movingElement.name != liveElements[i].name &&
-            movingElement.position.x+movingElement.width >=liveElements[i].position.x &&
-            movingElement.position.x <= liveElements[i].position.x + liveElements[i].width &&
-            movingElement.position.y + movingElement.height >=liveElements[i].position.y &&
-            movingElement.position.y <= liveElements[i].position.y + liveElements[i].height
-        ){
-            console.log(movingElement.name+" overlaps "+liveElements[i].name)
-            break;
+    if(movingElement){
+        for(let i = 0; i<liveElements.length; i++){
+            if( movingElement.name != liveElements[i].name &&
+                movingElement.position.x+movingElement.width >=liveElements[i].position.x &&
+                movingElement.position.x <= liveElements[i].position.x + liveElements[i].width &&
+                movingElement.position.y + movingElement.height >=liveElements[i].position.y &&
+                movingElement.position.y <= liveElements[i].position.y + liveElements[i].height
+            ){
+                console.log(movingElement.name+" overlaps "+liveElements[i].name)
+                break;
+            }
         }
+        //console.log(movingElement.name + " Element Dropped")
+        movingElement=false;
     }
+<<<<<<< HEAD
     //console.log(movingElement.name + " Element Dropped")
     movingElement=false;
+=======
+    
+>>>>>>> 58de56ffe54dadd944a531d2033b1bcadf857c53
 
-    //if two squares touch, console.log somethign
-    //Sean - is to figure out if squares touch
-    //Jake - layout the fusion code
 })
