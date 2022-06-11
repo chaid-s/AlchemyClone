@@ -58,11 +58,16 @@ const drawMenu = () =>{
         // ctx.font = "32px Jokerman"
         // ctx.fillText("water", .70*canvas.width+152,102+i*120 )
 
+
+
+
+
     }
 
 }
 
 const animate = () =>{
+    
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     liveElements.forEach(i =>{
