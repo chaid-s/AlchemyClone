@@ -10,14 +10,18 @@ class Element{
     }
 
     //Draws the elements to the living element table
-    draw(){
+    draw(scrollOffset){
         ctx.fillStyle = this.img;
-        ctx.fillRect(this.position.x,this.position.y, this.height, this.width);
+        ctx.fillRect(this.position.x,this.position.y+scrollOffset, this.height, this.width);
     }
 
-    //Draws elements to the dex
-     drawDexElement(){
-        //where is it being drawn
-        //x:70% of screen width, y 
-    }
+    
+    //This one doesn't work due to how the drag and drop will update this.position
+    //     // drawDexElement(scrollOffset, numLiveElements){
+    //     //where is it being drawn
+    //     //x:70% of screen width, y
+    //     ctx.strokeRect(this.position.x,this.position.y+scrollOffset, this.height*3, this.width+25)
+    //     ctx.font = "32px Comic Sans MS";
+    //     ctx.fillText(this.name,this.position.x + 150,this.position.y+scrollOffset + 50)
+    // }
 }
