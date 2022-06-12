@@ -139,8 +139,11 @@ document.getElementById("gameCanvas").addEventListener("mousedown",(e)=>{
     /**
      * Checks all elements to see if they are clicked.
      */
-    console.log(discoveredElements)
-     
+    //console.log(discoveredElements)
+    //if the click is right of the menu, do the check for dex entry
+        //under it, 
+    //if the click is left of the menu, do this stuff
+
     for(let i =liveElements.length-1; i>=0; i--){
         isElementClicked({x:e.offsetX, y:e.offsetY }, liveElements[i]);
         if(movingElement){
@@ -179,8 +182,6 @@ document.getElementById("gameCanvas").addEventListener("mouseup",(e)=>{
         //console.log(movingElement.name + " Element Dropped")
         movingElement=false;
     }
-    
-
 })
 
 window.addEventListener("resize",(e)=>{
