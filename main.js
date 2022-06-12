@@ -36,32 +36,37 @@ const drawMenu = () =>{
     ctx.fillStyle = "black"
     ctx.fillRect(.66*canvas.width, 0,1,canvas.height)
 
-    for(let i =0; i< discoveredElements.length; i++){
-        //Use real element objects
-        // ctx.fillStyle = "black"
-        // ctx.fillRect(.70*canvas.width, 50+i*120, .15*canvas.width, 110)
-        // ctx.fillStyle = "red"
-        // ctx.fillRect(.70*canvas.width+2, 52+i*120, 100,100)
-        // ctx.fillStyle = "white"
-        // ctx.font = "32px Jokerman"
-        // ctx.fillText("water", .70*canvas.width+152,102+i*120 )
+    //discoveredElements[1].Element.draw()
 
+    //Has bug due to how we are handling draw priority
+    for(let i =0; liveElements.length > i; i++){
+    //console.log(liveElements.length);
 
-
-
+    // //     // Use real element objects
+    // //     // ctx.fillStyle = "black"
+    // //     // ctx.fillRect(.70*canvas.width, 50+i*120, .15*canvas.width, 110)
+    // //     // ctx.fillStyle = "red"
+    // //     // ctx.fillRect(.70*canvas.width+2, 52+i*120, 100,100)
+    // //     // ctx.fillStyle = "white"
+    // //     // ctx.font = "32px Jokerman"
+    // //     // ctx.fillText("water", .70*canvas.width+152,102+i*120)
+    ctx.strokeRect(1000, i*150+50+scrollOffset, 300, 125)
+    ctx.font = "32px Comic Sans MS";
+    ctx.fillText(liveElements[i].name, 1000 , i*150+50+scrollOffset + 50)
 
     }
-
+    //console.log("not an infinite loop")
 }
+
+
 
 const animate = () =>{
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     liveElements.forEach(i =>{
-        i.draw();
+        i.draw(scrollOffset)
     })
-
     //draw menu loop
     drawMenu();
 
@@ -69,8 +74,6 @@ const animate = () =>{
 }
 
 animate();
-
-
 
 
 let movingElement = false;
@@ -105,8 +108,8 @@ const generateChildElements = (childrenArray) =>{
 
         if(childrenArray.includes(element.name)){
             let tempEl = new Element({name:element.name,
-                position:{x:100+Math.floor(Math.random() * 100),
-                y:100+Math.floor(Math.random() * 100)}, img:element.img, id:setId()});
+                position:{x:1000,
+                y:liveElements.length*150+50}, img:element.img, id:setId()});
             
             liveElements.push(tempEl);
             tempEl.draw();
@@ -126,8 +129,7 @@ const isElementClicked=(click,element)=>{
         && click.y >= element.position.y && click.y <= element.position.y + element.height){
             //console.log("clicked:", element.name);
             movingElement = element;
-            //remove element from liveElements then push it back in
-            
+            //remove element from liveElements then push it back in       
             liveElements = liveElements.filter(el =>{return el.id!=movingElement.id})
             liveElements.push(movingElement);
             console.log(liveElements)
