@@ -7,8 +7,8 @@ const fillStarterData = () =>{
 
     const earth = new Element({name:"earth",position:{x:1000, y:500}, img:"brown",id:setId()});
     //maybe try enqueue 
-    liveElements.push(wind)
-    liveElements.push(water)
-    liveElements.push(earth)
-    liveElements.push(fire)
+    // liveElements.push(wind)
+    // liveElements.push(water)
+    // liveElements.push(earth)
+    // liveElements.push(fire)
 }

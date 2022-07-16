@@ -6,7 +6,7 @@ const ctx = canvas.getContext("2d");
 let scrollOffset = 0;
 let liveElements = [];
 let elementID = 0;
-
+let movingElement = false;
 const setId = () =>{
     return elementID++;
 }
@@ -22,40 +22,46 @@ const fillDiscoveredElements = () =>{
         if(el.discovered){
             let element = new Element({name:el.name,
                 position:{x:0, y:0}, 
-                img:el.img});
-                discoveredElements.push(el);
+                img:el.img, id:setId()});
+                discoveredElements.push(element);
         }
         
     })
 }
 
+const isMenuClicked = (click, element) =>{
+    
+    if(click.x >= .7*canvas.width && click.x <= .7*canvas.width + 300 
+        && click.y >= element.position.y && click.y <= element.position.y + 125){
+            console.log("clicked:", element.name);
+            movingElement = element; 
+        }
+        else{
+            movingElement = false;   
+        }
+
+}
+
 const drawMenu = () =>{
     //If this is processor intensive, fix it, idiot
     fillDiscoveredElements();
-
+    
     ctx.fillStyle = "black"
     ctx.fillRect(.66*canvas.width, 0,1,canvas.height)
 
-    //discoveredElements[1].Element.draw()
 
     //Has bug due to how we are handling draw priority
-    for(let i =0; liveElements.length > i; i++){
-    //console.log(liveElements.length);
-
-    // //     // Use real element objects
-    // //     // ctx.fillStyle = "black"
-    // //     // ctx.fillRect(.70*canvas.width, 50+i*120, .15*canvas.width, 110)
-    // //     // ctx.fillStyle = "red"
-    // //     // ctx.fillRect(.70*canvas.width+2, 52+i*120, 100,100)
-    // //     // ctx.fillStyle = "white"
-    // //     // ctx.font = "32px Jokerman"
-    // //     // ctx.fillText("water", .70*canvas.width+152,102+i*120)
-    ctx.strokeRect(1000, i*150+50+scrollOffset, 300, 125)
+    for(let i =0; discoveredElements.length > i; i++){
+    
+    ctx.strokeRect(.7*canvas.width, i*150+50+scrollOffset, 300, 100)
     ctx.font = "32px Comic Sans MS";
-    ctx.fillText(liveElements[i].name, 1000 , i*150+50+scrollOffset + 50)
+    ctx.fillText(discoveredElements[i].name, .80*canvas.width , i*150+50+scrollOffset + 50)
+    //draw in the element box
+    //change their positions and then draw them
+    discoveredElements[i].position = {x:.7*canvas.width, y:i*150+50+scrollOffset}
+    discoveredElements[i].draw()
 
     }
-    //console.log("not an infinite loop")
 }
 
 
@@ -64,140 +70,19 @@ const animate = () =>{
     
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    liveElements.forEach(i =>{
-        i.draw(scrollOffset)
-    })
     //draw menu loop
     drawMenu();
 
+    liveElements.forEach(i =>{
+        i.draw()
+    })
+
+    if(movingElement){
+        movingElement.draw()
+    }
+    
+  
     window.requestAnimationFrame(animate);
 }
 
 animate();
-
-
-let movingElement = false;
-
-/**
- * Takes two element names. If there is an entry
- * in fusionList with two matching parents 
- * (the order of parents does not matter),
- * return the array of children.
- */
-const fuseElements = (elementName1, elementName2) =>{
-    // console.log("fuseElements:", elementName1, elementName2)
-     for(let i = 0; i<fusionList.length; i++){
-         let check = fusionList[i];
-         if(check.parents.includes(elementName1) 
-            && check.parents.includes(elementName2)){
-                return check.children;
-         }
-     }
-
-     return [];
-}
-
-
-/**
- * Accepts a list of element names
- * Draws them as elements to the screen
- */
-const generateChildElements = (childrenArray) =>{
-
-    masterElementList.forEach(element=>{
-
-        if(childrenArray.includes(element.name)){
-            let tempEl = new Element({name:element.name,
-                position:{x:1000,
-                y:liveElements.length*150+50}, img:element.img, id:setId()});
-            
-            liveElements.push(tempEl);
-            tempEl.draw();
-            element.discovered = true;
-        }
-    })
-}
-
-
-/**
- * Takes a mouseclick's coords, and an element,
- * and returns that element ONLY if it was clicked.
- */
-const isElementClicked=(click,element)=>{
-   
-    if(click.x >= element.position.x && click.x <= element.position.x + element.width 
-        && click.y >= element.position.y && click.y <= element.position.y + element.height){
-            //console.log("clicked:", element.name);
-            movingElement = element;
-            //remove element from liveElements then push it back in       
-            liveElements = liveElements.filter(el =>{return el.id!=movingElement.id})
-            liveElements.push(movingElement);
-            console.log(liveElements)
-        }
-        else{
-            movingElement = false;   
-        }
-
-
-}
-
-
-document.getElementById("gameCanvas").addEventListener("mousedown",(e)=>{
-    /**
-     * Checks all elements to see if they are clicked.
-     */
-    //console.log(discoveredElements)
-    //if the click is right of the menu, do the check for dex entry
-        //under it, 
-    //if the click is left of the menu, do this stuff
-
-    for(let i =liveElements.length-1; i>=0; i--){
-        isElementClicked({x:e.offsetX, y:e.offsetY }, liveElements[i]);
-        if(movingElement){
-            break;
-        }
-    }
-   
-})
-
-document.getElementById("gameCanvas").addEventListener("mousemove",(e)=>{
-
-    //If we have an element then update its position 
-    if(movingElement){
-        movingElement.position.x = e.offsetX;
-        movingElement.position.y = e.offsetY;
-    }
-})
-
-document.getElementById("gameCanvas").addEventListener("mouseup",(e)=>{
-    //drop the element
-    //then,,.,. run check if dropped element touched anything
-    //if so run fusions checks
-    if(movingElement){
-        for(let i = 0; i<liveElements.length; i++){
-            if( movingElement.name != liveElements[i].name &&
-                movingElement.position.x+movingElement.width >=liveElements[i].position.x &&
-                movingElement.position.x <= liveElements[i].position.x + liveElements[i].width &&
-                movingElement.position.y + movingElement.height >=liveElements[i].position.y &&
-                movingElement.position.y <= liveElements[i].position.y + liveElements[i].height
-            ){
-                console.log(movingElement.name+" overlaps "+liveElements[i].name)
-                let children = fuseElements(movingElement.name, liveElements[i].name);
-                generateChildElements(children);
-            }
-        }
-        //console.log(movingElement.name + " Element Dropped")
-        movingElement=false;
-    }
-})
-
-window.addEventListener("resize",(e)=>{
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-})
-
-window.addEventListener("wheel",(e)=>{
-    //we need to plus or minus the scroll offset
-    scrollOffset+=e.deltaY
-    //console.log(scrollOffset);
-})

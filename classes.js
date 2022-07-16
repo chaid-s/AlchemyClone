@@ -10,9 +10,9 @@ class Element{
     }
 
     //Draws the elements to the living element table
-    draw(scrollOffset){
+    draw(){
         ctx.fillStyle = this.img;
-        ctx.fillRect(this.position.x,this.position.y+scrollOffset, this.height, this.width);
+        ctx.fillRect(this.position.x,this.position.y, this.height, this.width);
     }
 
     
